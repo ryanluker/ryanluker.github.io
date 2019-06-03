@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Testing Visual Studio Code Extensions"
-date:   2018-06-26 22:00:00 -0700
+title: "Testing Visual Studio Code Extensions"
+date: 2018-06-26 22:00:00 -0700
 categories: typescript extension testing
 ---
 

@@ -9,13 +9,38 @@ Testing is a key focus of mine whenever building software, doubly so when people
 
 This first example is rather simple (really just a warmup for us). It tests for the extension being properly started by the testing harness. This allows for me to confirm that the extension activation step has completed successfully.
 
-<script src="https://gist.github.com/ryanluker/a9ac95c0d477aafd1b0906edcf3a0680.js"></script>
+```
+test("Should start extension @integration", async () => {
+    const started = vscode.extensions.getExtension(
+        "ryanluker.vscode-coverage-gutters",
+    ).isActive;
+    assert.equal(started, true);
+});
+```
 
 It uses the [getExtension](https://code.visualstudio.com/docs/extensionAPI/vscode-api#extensions.getExtension) function on the vscode api to fetch information about the installed extension. I then simply assert that it is active and ready to accept commands.
 
 The next example is much more complex and provides a lot of coverage to many areas of the extension such as the file loader, coverage generation, lcov parser, etc. The goal of the test is to confirm that when a file is opened in the IDE (this file must also have coverage in the [example project](https://github.com/ryanluker/vscode-coverage-gutters/tree/master/example/node)) we check that the code coverage lines have been calculated with the expected values.
 
-<script src="https://gist.github.com/ryanluker/636d39686f65495a63e2cc88002603b3.js"></script>
+```
+test("Run display coverage on node test file @integration", async () => {
+    const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+    const getCachedLines = extension.exports;
+    const testCoverage = await vscode.workspace.findFiles("**/test-coverage.js", "**/node_modules/**");
+    const testDocument = await vscode.workspace.openTextDocument(testCoverage[0]);
+    const testEditor = await vscode.window.showTextDocument(testDocument);
+    await vscode.commands.executeCommand("extension.displayCoverage");
+
+    // Wait for decorations to load
+    await sleep(2000);
+
+    // Look for exact coverage on the file
+    const cachedLines: ICoverageLines = getCachedLines();
+    assert.equal(14, cachedLines.full.length);
+    assert.equal(4, cachedLines.none.length);
+    assert.equal(7, cachedLines.partial.length);
+});
+```
 
 Many of the steps in this test are for setting up the IDE in a way that allows for the proper running of the `displayCoverage` command. You can see on line 3 we get the exported api provided by vscode-coverage-gutters that will allow us to later fetch the lines of coverage. Next in lines 4-6 we setup the IDE to have the test document open and ready to have coverage displayed.
 
@@ -23,7 +48,24 @@ Finally, you can see we assert that the coverage received from the exported api 
 
 A similar example but for the xml-based coverage can be found below as well.
 
-<script src="https://gist.github.com/ryanluker/c10df3c6e24b823c3aa8578a2978e51f.js"></script>
+```
+test("Run display coverage on python test file @integration", async () => {
+    const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
+    const getCachedLines = extension.exports;
+    const testCoverage = await vscode.workspace.findFiles("**/bar/a.py", "**/node_modules/**");
+    const testDocument = await vscode.workspace.openTextDocument(testCoverage[0]);
+    const testEditor = await vscode.window.showTextDocument(testDocument);
+    await vscode.commands.executeCommand("extension.displayCoverage");
+
+    // Wait for decorations to load
+    await sleep(2000);
+
+    // Look for exact coverage on the file
+    const cachedLines: ICoverageLines = getCachedLines();
+    assert.equal(3, cachedLines.full.length);
+    assert.equal(3, cachedLines.none.length);
+});
+```
 
 You can find all of the example test snippets above in [`extension.test.ts`](https://github.com/ryanluker/vscode-coverage-gutters/blob/v2.0.0/test/extension.test.ts), hopefully they provide useful examples to allow others to test their vscode extensions.
 

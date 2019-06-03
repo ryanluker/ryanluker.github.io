@@ -1,0 +1,10 @@
+title: luker.dev
+author: Ryan Luker
+email: ryanluker@outlook.com
+description: > # this means to ignore newlines until "baseurl:"
+  A website that contains posts about my projects, thinkings and experiences.
+# social links
+twitter_username: _ryanluker
+github_username: ryanluker
+
+show_excerpts: true # set to false to remove excerpts on the homepage

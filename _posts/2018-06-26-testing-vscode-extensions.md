@@ -9,7 +9,7 @@ Testing is a key focus of mine whenever building software, doubly so when people
 
 This first example is rather simple (really just a warmup for us). It tests for the extension being properly started by the testing harness. This allows for me to confirm that the extension activation step has completed successfully.
 
-```
+```ts
 test("Should start extension @integration", async () => {
     const started = vscode.extensions.getExtension(
         "ryanluker.vscode-coverage-gutters",
@@ -22,7 +22,7 @@ It uses the [getExtension](https://code.visualstudio.com/docs/extensionAPI/vscod
 
 The next example is much more complex and provides a lot of coverage to many areas of the extension such as the file loader, coverage generation, lcov parser, etc. The goal of the test is to confirm that when a file is opened in the IDE (this file must also have coverage in the [example project](https://github.com/ryanluker/vscode-coverage-gutters/tree/master/example/node)) we check that the code coverage lines have been calculated with the expected values.
 
-```
+```ts
 test("Run display coverage on node test file @integration", async () => {
     const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
     const getCachedLines = extension.exports;
@@ -48,7 +48,7 @@ Finally, you can see we assert that the coverage received from the exported api 
 
 A similar example but for the xml-based coverage can be found below as well.
 
-```
+```ts
 test("Run display coverage on python test file @integration", async () => {
     const extension = await vscode.extensions.getExtension("ryanluker.vscode-coverage-gutters");
     const getCachedLines = extension.exports;

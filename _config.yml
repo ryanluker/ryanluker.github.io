@@ -15,4 +15,4 @@ plugins:
 show_excerpts: true # set to false to remove excerpts on the homepage
 highlighter: rouge
 
-theme: jekyll-theme-cayman
+theme: jekyll-theme-tactile

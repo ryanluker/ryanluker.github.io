@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "How to unit test vscode extensions with basic mocks"
 date: 2019-09-30 18:00:00 -0700
 categories: vscode testing mocking

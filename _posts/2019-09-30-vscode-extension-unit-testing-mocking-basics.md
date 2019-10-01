@@ -5,12 +5,14 @@ date: 2019-09-30 18:00:00 -0700
 categories: vscode testing mocking
 ---
 ### How to unit test vscode extensions with basic mocks
+
 One of the major tools in any testers toolbelt is the mighty module mock. So when I started looking into adding proper unit tests to my vscode extension, I surprisingly had quite a difficult time finding something that would work gracefully with vscode's test harness. Seeming I have also been tinkering with go and the absolutely fantastic gitbook [learn-go-with-tests](https://quii.gitbook.io/learn-go-with-tests/), I decided to try my hand at creating a simple mocking structure for [vscode-coverage-gutters](https://github.com/ryanluker/vscode-coverage-gutters). This was in contrast to using something established like [sinon](https://sinonjs.org). Big warning before I dive in though, this implementation works well for this specific use case but should not be taken as vscode extension testing gospel!
 
 Let's quickly breakdown the problem before we go into our very basic mocking implementation.
-1) We need a way to mock module functionality that are used inside our extension (vscode, requests, etc).
-2) We need to swap the current functionality of the module with our test expectation
-3) Once we have completed a test case, we need to clean up after ourselves to prevent test leakage.
+
+1. We need a way to mock module functionality that are used inside our extension (vscode, requests, etc).
+2. We need to swap the current functionality of the module with our test expectation
+3. Once we have completed a test case, we need to clean up after ourselves to prevent test leakage.
 
 Alright, with our requirements outlined let's dive in! The first critical piece of understanding is how we can mock modules inside the test case without directly affecting the piece of code under test. This is where having an understanding of the nodejs import [caching system](https://nodejs.org/api/modules.html#modules_caching) comes into play. Using the cache ,to effect extension wide changes, we can do something like this for mocking the `fs.readFile`.
 

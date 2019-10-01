@@ -4,7 +4,7 @@ title: "Testing Visual Studio Code Extensions"
 date: 2018-06-26 22:00:00 -0700
 categories: typescript extension testing
 ---
-
+### Testing Visual Studio Code Extensions
 Testing is a key focus of mine whenever building software, doubly so when people depend on it! Integration testing is a valuable part of the testing pyramid and one that I found difficulty in finding examples to use in [vscode-coverage-gutters](https://github.com/ryanluker/vscode-coverage-gutters). In the next few code snippets I outline some of the integration tests I wrote during development. I also dive into what confidence they provide me, in terms of not breaking current features with future work, along with some of the critical api's I used.
 
 This first example is rather simple (really just a warmup for us). It tests for the extension being properly started by the testing harness. This allows for me to confirm that the extension activation step has completed successfully.
